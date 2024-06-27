@@ -2,6 +2,7 @@ package com.rpn.routes
 
 import com.rpn.data.createEmployeeOrUpdateEmployeeForId
 import com.rpn.data.deleteEmployeeForId
+import com.rpn.data.getAllEmployee
 import com.rpn.data.getEmployeeForId
 import com.rpn.data.model.Employee
 import com.rpn.data.requests.DeleteEmployeeRequest
@@ -13,6 +14,16 @@ import io.ktor.server.response.*
 import io.ktor.server.routing.*
 
 fun Route.employeeRoutes() {
+
+    route("/get-all-employee") {
+        get {
+            val employees = getAllEmployee()
+            call.respond(
+                HttpStatusCode.OK,
+                employees
+            )
+        }
+    }
 
     route("/get-employee") {
         get {

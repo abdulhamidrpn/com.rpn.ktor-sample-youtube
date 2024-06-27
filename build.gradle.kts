@@ -4,6 +4,7 @@ val logback_version: String by project
 
 plugins {
     kotlin("jvm") version "2.0.0"
+    kotlin("plugin.serialization") version "2.0.0"
     id("io.ktor.plugin") version "2.3.12"
 }
 
@@ -35,6 +36,7 @@ dependencies {
     implementation("org.litote.kmongo:kmongo:4.5.1")
     implementation("org.litote.kmongo:kmongo-coroutine:4.5.1")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.2")
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.3")
 
     implementation(kotlin("stdlib-jdk8"))
 }
@@ -42,14 +44,21 @@ kotlin {
     jvmToolchain(20)
 }
 
+tasks{
+    shadowJar{
+        manifest{
+            attributes(Pair("Main-Class","com.rpn.ApplicationKt"))
+        }
+    }
+}
 ktor {
     fatJar {
-        archiveFileName.set("fat.jar")
+        archiveFileName.set("com.rpn.ktor-sample-youtube-$version-all.jar")
     }
 
     docker {
         jreVersion.set(JavaVersion.VERSION_17)
-        localImageName.set("sample-docker-image")
+        localImageName.set("ktor-sample-youtube")
         imageTag.set("0.0.1-preview")
         portMappings.set(listOf(
             io.ktor.plugin.features.DockerPortMapping(
